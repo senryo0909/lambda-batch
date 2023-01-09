@@ -22,7 +22,7 @@ jobs:
           role-session-name: GitHubActions
 
       - name: get-caller-identity is allowed to run on role.
-        run: aws sts get-caller-identity --profile Ta9yaAmex
+        run: aws sts get-caller-identity
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
