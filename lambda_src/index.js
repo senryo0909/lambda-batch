@@ -14,10 +14,10 @@ export const handler = async (event) => {
                     headers: { 'Authorization': `Bearer ${env.lineApiToken}` }
                   });
             const { totalUsage } = await resFromLineResponse.json();
+            return totalUsage;
         } catch(err){
             throw new err("LINEリクエスト失敗")
         }
-        return totalUsage;
     }
 
     // Lineメッセージ残数とメッセージ対応付
