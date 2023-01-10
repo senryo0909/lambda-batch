@@ -1,11 +1,6 @@
 import fetch from 'node-fetch';
 import 'date-utils'
 const env = process.env;
-const SlackMsgs = {
-    "over": `当月のpushメッセージ数が${env.threshold}以上! :alert: \n 追加申請をお願いします!当月pushメッセージ数:${resData}`,
-    "under": `当月のpushメッセージ数は${env.threshold}以内です。:sunny: \n 当月pushメッセージ数:${resData}`,
-    "even": `当月のpushメッセージ数は${env.threshold}です。`
-};
 let distSlackMsg;
 
 export const handler = async (event) => {
@@ -28,9 +23,9 @@ export const handler = async (event) => {
     // Lineメッセージ残数とメッセージ対応付
     const createMsgFromLineRes = async (resData) => {
         if(env.threshold < resData || env.threshold == resData) {
-            distSlackMsg = SlackMsgs.over;
+            distSlackMsg = `当月のpushメッセージ数が${env.threshold}以上! :alert: \n 追加申請をお願いします!当月pushメッセージ数:${resData}`;
         } else if(env.threshold > resData) {
-            distSlackMsg = SlackMsgs.under;
+            distSlackMsg = `当月のpushメッセージ数は${env.threshold}以内です。:sunny: \n 当月pushメッセージ数:${resData}`;
         }
         return distSlackMsg;
     }
@@ -45,9 +40,13 @@ export const handler = async (event) => {
             channel: env.slackChannelId,
             text: distSlackMsg
         }
-        const webHookUrl = env.webHookUrl;
-        const res = await fetch(webHookUrl, {method: 'POST', body: JSON.stringify(body), headers: headers});
-        if(!res.ok) throw new Error("slackチャネルへのメッセージ送信に失敗しました");
+        try{
+            const webHookUrl = env.webHookUrl;
+            const res = await fetch(webHookUrl, {method: 'POST', body: JSON.stringify(body), headers: headers});
+            if(!res.ok) throw new Error("slackチャネルへのメッセージ送信に失敗しました");
+        } catch(e) {
+            error.log(e);
+        }
     }
 
     try {
@@ -56,7 +55,7 @@ export const handler = async (event) => {
         // msgの整形
         const result = await createMsgFromLineRes(totalUsageCounts);
         // slackのWebhook
-        await postSlackWebhookApi()
+        await postSlackWebhookApi(result);
     } catch(e) {
         console.log(`エラー！${e}`);
     }
