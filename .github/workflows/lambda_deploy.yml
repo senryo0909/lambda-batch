@@ -33,4 +33,5 @@ jobs:
         run: |
           cd ./lambda_src && npm ci
           zip -r package.zip ./*
-          aws lambda update-function-code --function-name sample-lambda-batch --environment Variables="{"lineApiToken"=${{ secrets.LINE_API_TOKEN }}, "slackBotToken"=${{ secrets.SLACK_BOT_TOKEN }}, "webHookUrl"=${{ secrets.SLACK_WEBHOOK_URL}}, "slackBotToken"=${{ secrets.SLACK_BOT_TOKEN }}, "lineApiUrl"=${{ secrets.LINE_API_URL }}, "threshold"=${{ secrets.THRESHOULD }}}" --zip-file fileb://package.zip --publish
+          aws lambda update-function-code --function-name sample-lambda-batch --zip-file fileb://package.zip --publish
+          aws lambda update-function-configuration --function-name sample-lambda-batch --environment Variables="{"lineApiToken"=${{ secrets.LINE_API_TOKEN }}, "slackBotToken"=${{ secrets.SLACK_BOT_TOKEN }}, "webHookUrl"=${{ secrets.SLACK_WEBHOOK_URL}}, "slackBotToken"=${{ secrets.SLACK_BOT_TOKEN }}, "lineApiUrl"=${{ secrets.LINE_API_URL }}, "threshold"=${{ secrets.THRESHOULD }}}"
