@@ -19,7 +19,7 @@ module "lambda" {
   memory_size           = 128
   timeout               = 50
   log_retention_in_days = 14
-  function_name = "srcLineDistSlack"
+  function_name         = "srcLineDistSlack"
 
 }
 
