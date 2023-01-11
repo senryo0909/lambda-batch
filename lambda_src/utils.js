@@ -22,7 +22,8 @@ export const createMsgFromLineRes = async (resData) => {
     if(env.threshold < resData || env.threshold == resData) {
         distSlackMsg = `当月のpushメッセージ数が${env.threshold}以上! :alert: \n 追加申請をお願いします!当月pushメッセージ数:${resData}`;
     } else if(env.threshold > resData) {
-        distSlackMsg = `当月のpushメッセージ数は${env.threshold}以内です。:sunny: \n 当月pushメッセージ数:${resData}`;
+        let leftAvailMsgNum = env.threshold - resData;
+        distSlackMsg = `当月のpushメッセージ数は${env.threshold}以内です。:sunny: \n 残pushメッセージ数:${leftAvailMsgNum}`;
     }
     return distSlackMsg;
 }
@@ -31,7 +32,7 @@ export const createMsgFromLineRes = async (resData) => {
 export const postSlackWebhookApi = async (distSlackMsg) => {
     let headers = {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${env.slackBotToken}`
+        // "Authorization": `Bearer ${env.slackBotToken}`
     }
     let body = {
         channel: env.slackChannelId,
