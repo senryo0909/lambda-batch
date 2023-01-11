@@ -8,7 +8,6 @@ terraform {
     bucket = "member-s-line-counters"
     key    = "members/terraform.tfstate"
     region = "ap-northeast-1"
-    # shared_credentials_file = "[$HOME/.aws/credentials]"
     shared_credentials_file = "$HOME/.aws/credentials"
     profile                 = "Ta9yaAmex"
 
