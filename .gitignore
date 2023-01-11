@@ -1,2 +1,8 @@
 node_modules
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+.envrc
 .DS_Store
+*/.DS_Store
